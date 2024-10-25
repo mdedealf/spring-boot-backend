@@ -1,0 +1,4 @@
+package com.mdedealf.freshGoodiesBackendApplication.products;
+
+public class ProductController {
+}
