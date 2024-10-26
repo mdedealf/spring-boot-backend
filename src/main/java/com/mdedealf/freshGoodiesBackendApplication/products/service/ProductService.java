@@ -32,7 +32,7 @@ public class ProductService implements ProductServiceInterface {
     @Override
     public Product createProduct(Product product) {
         if(productRepository.existsById(product.getId())) {
-            throw new RuntimeException("Product already exists");
+            throw new RuntimeException("Product with ID " + product.getId() + " already exists");
         }
         return productRepository.save(product);
     }

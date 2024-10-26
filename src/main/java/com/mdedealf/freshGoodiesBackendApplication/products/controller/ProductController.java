@@ -2,6 +2,9 @@ package com.mdedealf.freshGoodiesBackendApplication.products.controller;
 
 import com.mdedealf.freshGoodiesBackendApplication.products.entity.Product;
 import com.mdedealf.freshGoodiesBackendApplication.products.service.ProductService;
+import com.mdedealf.freshGoodiesBackendApplication.responses.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +20,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return productService.getProducts();
+    public ResponseEntity<Response<List<Product>>> getProducts() {
+        return Response.successfullyResponse(
+            HttpStatus.OK.value(),
+            "Products fetched successfully",
+            productService.getProducts());
     }
 
     @GetMapping("/{id}")
@@ -27,8 +33,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public ResponseEntity<Response<Product>> createProduct(@RequestBody Product product) {
         var createdProduct = productService.createProduct(product);
-        return createdProduct;
+        return Response.successfullyResponse(
+                HttpStatus.CREATED.value(),
+                "Successfully created a new product",
+                createdProduct
+        );
     }
 }
