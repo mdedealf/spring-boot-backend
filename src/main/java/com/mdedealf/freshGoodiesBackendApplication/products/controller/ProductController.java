@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -24,12 +25,17 @@ public class ProductController {
         return Response.successfullyResponse(
             HttpStatus.OK.value(),
             "Products fetched successfully",
-            productService.getProducts());
+            productService.getProducts()
+        );
     }
 
     @GetMapping("/{id}")
-    public String getProductById(@PathVariable int id) {
-        return "Product ID : "+id;
+    public ResponseEntity<Response<Optional<Product>>> getProduct(@PathVariable long id) {
+        return Response.successfullyResponse(
+                HttpStatus.OK.value(),
+                "Product fetched successfully",
+                productService.getProduct(id)
+        );
     }
 
     @PostMapping

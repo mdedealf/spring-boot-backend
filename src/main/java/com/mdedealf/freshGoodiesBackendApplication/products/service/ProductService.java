@@ -25,8 +25,10 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public Optional<Product> getProduct() {
-        return Optional.empty();
+    public Optional<Product> getProduct(long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) throw new RuntimeException("Product with ID " + id + " not found");
+        return product;
     }
 
     @Override
