@@ -16,6 +16,9 @@ public class ProductController {
 
     private final ProductService productService;
 
+    /*
+        Inject ProductService to ProductController
+     */
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -46,5 +49,17 @@ public class ProductController {
                 "Successfully created a new product",
                 createdProduct
         );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Response<Product>> updateProduct(@PathVariable long id, @RequestBody Product product) {
+        product.setId(id);
+        return Response.successfullyResponse("Update product successfully", productService.updateProduct(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response<Product>> deleteProduct(@PathVariable long id) {
+        productService.deleteProduct(id);
+        return Response.successfullyResponse("Product with id " + id + " deleted successfully");
     }
 }
