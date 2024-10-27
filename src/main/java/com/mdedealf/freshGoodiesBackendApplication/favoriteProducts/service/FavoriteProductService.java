@@ -10,7 +10,9 @@ import com.mdedealf.freshGoodiesBackendApplication.products.repository.ProductRe
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FavoriteProductService implements FavoriteProductsInterface {
@@ -51,5 +53,18 @@ public class FavoriteProductService implements FavoriteProductsInterface {
             // Marked as favorite
             return true;
         }
+    }
+
+    @Override
+    public List<Product> getAllFavoriteProducts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User with ID : " +userId+ " not found."));
+
+        List<FavoriteProduct> favoriteProducts = favoriteProductRepository.findByUser(user);
+
+        return favoriteProducts.stream()
+                .map(favoriteProduct -> productRepository.findById(favoriteProduct.getProduct().getId())
+                        .orElseThrow(() -> new DataNotFoundException("Product with ID: " +favoriteProduct.getProduct().getId()+ " not found")))
+                .collect(Collectors.toList());
     }
 }

@@ -1,11 +1,13 @@
 package com.mdedealf.freshGoodiesBackendApplication.favoriteProducts.controller;
 
 import com.mdedealf.freshGoodiesBackendApplication.favoriteProducts.service.FavoriteProductService;
+import com.mdedealf.freshGoodiesBackendApplication.products.entity.Product;
 import com.mdedealf.freshGoodiesBackendApplication.responses.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,6 +41,25 @@ public class FavoriteProductController {
                 HttpStatus.OK.value(),
                 "Favorite product toggled successfully",
                 responseData
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Response<List<Product>>> getAllFavoriteProducts(@RequestParam Long userId) {
+        List<Product> favoriteProducts = favoriteProductService.getAllFavoriteProducts(userId);
+
+        if (favoriteProducts.isEmpty()) {
+            return Response.successfullyResponse(
+                    HttpStatus.OK.value(),
+                    "Favorite products list is empty.",
+                    favoriteProducts
+            );
+        }
+
+        return Response.successfullyResponse(
+                HttpStatus.OK.value(),
+                "Favorite products fetched successfully.",
+                favoriteProducts
         );
     }
 }
