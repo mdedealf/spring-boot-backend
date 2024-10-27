@@ -11,7 +11,7 @@ public class Response<T> {
 
     private int statusCode;
     private String message;
-    boolean success = false;
+    private boolean success = false;
     private T data;
 
     public Response(int statusCode, String statusDescription) {
